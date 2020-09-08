@@ -13,6 +13,7 @@ class CounterService: Service(){
 
         override fun handleMessage(msg: Message) {
             try {
+                msg.arg2 += 1
                 Thread.sleep(5000)
             } catch (e: InterruptedException) {
                 Thread.currentThread().interrupt()
@@ -35,6 +36,7 @@ class CounterService: Service(){
 
         serviceHandler!!.obtainMessage().also { msg ->
             msg.arg1 = startId
+            msg.arg2 = 0
             serviceHandler!!.sendMessage(msg)
         }
 
