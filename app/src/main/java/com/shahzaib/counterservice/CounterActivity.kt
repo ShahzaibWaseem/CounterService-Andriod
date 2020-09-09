@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class CounterActivity: AppCompatActivity() {
@@ -16,7 +15,6 @@ class CounterActivity: AppCompatActivity() {
     {
         override fun onReceive(context: Context?, intent: Intent?) {
            val counter = intent!!.getIntExtra("Counter", 0)
-            Toast.makeText(context, "Counter: $counter", Toast.LENGTH_SHORT).show()
             onShowData(counter)
         }
     }
@@ -39,7 +37,6 @@ class CounterActivity: AppCompatActivity() {
 
     fun onShowData(count: Int) {
         countTextView = findViewById(R.id.countText)
-
         countTextView.text = count.toString()
     }
 
@@ -47,5 +44,4 @@ class CounterActivity: AppCompatActivity() {
         super.onStop()
         unregisterReceiver(mBroadcastReceiver)
     }
-
 }
