@@ -21,6 +21,8 @@ class CounterActivity: AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        countTextView = findViewById(R.id.countText)
+
         counterReceiver = CounterReceiver()
         val intentFilter = IntentFilter()
         intentFilter.addAction(CounterService.INTENT_ACTION)
@@ -28,6 +30,8 @@ class CounterActivity: AppCompatActivity() {
 
         val intent: Intent = Intent(this, CounterService::class.java)
         startService(intent)
+
+        countTextView.text = counterReceiver.counter.toString()
     }
 
     override fun onStop() {
@@ -36,9 +40,10 @@ class CounterActivity: AppCompatActivity() {
     }
 
     class CounterReceiver: BroadcastReceiver() {
+        var counter: Int = 0
         override fun onReceive(context: Context?, intent: Intent?) {
-            val counter: Int = intent!!.getIntExtra("Counter", 0)
-            Toast.makeText(context, "Counter: $counter", Toast.LENGTH_SHORT).show()
+            counter = intent!!.getIntExtra("Counter", 0)
+//            Toast.makeText(context, "Counter: $counter", Toast.LENGTH_SHORT).show()
         }
     }
 }
