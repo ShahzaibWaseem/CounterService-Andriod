@@ -41,12 +41,14 @@ class CounterService: Service(){
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show()
 
-        serviceHandler!!.obtainMessage().also { msg ->
-            msg.arg1 = startId
-            msg.arg2 = count
-            serviceHandler!!.sendMessage(msg)
+        while (count <= MAX_COUNT) {
+            serviceHandler!!.obtainMessage().also { msg ->
+                msg.arg1 = startId
+                msg.arg2 = count
+                serviceHandler!!.sendMessage(msg)
+            }
+            count += 1
         }
-        count++
 
         // restart, if service gets killed
         return START_STICKY
@@ -63,5 +65,6 @@ class CounterService: Service(){
 
     companion object {
         val INTENT_ACTION: String = "Counter"
+        const val MAX_COUNT: Int = 1000
     }
 }
