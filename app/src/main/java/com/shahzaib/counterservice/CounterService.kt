@@ -60,6 +60,7 @@ class CounterService: Service(){
     }
 
     override fun onDestroy() {
+        serviceLooper!!.quit()
         Toast.makeText(this, "Service Destroyed", Toast.LENGTH_SHORT).show()
     }
 
