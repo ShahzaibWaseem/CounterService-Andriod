@@ -25,7 +25,6 @@ class CounterService: Service(){
             } catch (e: InterruptedException) {
                 Thread.currentThread().interrupt()
             }
-            stopSelf(msg.arg1)
         }
     }
 
