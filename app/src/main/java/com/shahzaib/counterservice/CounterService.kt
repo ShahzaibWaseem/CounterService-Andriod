@@ -21,7 +21,7 @@ class CounterService: Service(){
                 intent.putExtra("Counter", msg.arg2)
                 sendBroadcast(intent)
 
-                Thread.sleep(5000)
+                Thread.sleep(1000)
             } catch (e: InterruptedException) {
                 Thread.currentThread().interrupt()
             }
@@ -41,10 +41,12 @@ class CounterService: Service(){
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show()
 
-        serviceHandler!!.obtainMessage().also { msg ->
-            msg.arg1 = startId
-            msg.arg2 = 0
-            serviceHandler!!.sendMessage(msg)
+        for (i in 0..10) {
+            serviceHandler!!.obtainMessage().also { msg ->
+                msg.arg1 = startId
+                msg.arg2 = i
+                serviceHandler!!.sendMessage(msg)
+            }
         }
 
         // restart, if service gets killed
@@ -58,6 +60,7 @@ class CounterService: Service(){
 
     override fun onDestroy() {
         Toast.makeText(this, "Service Destroyed", Toast.LENGTH_SHORT).show()
+        stopSelf()
     }
 
     companion object {
