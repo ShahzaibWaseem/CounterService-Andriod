@@ -8,6 +8,7 @@ import android.widget.Toast
 class CounterService: Service(){
     private var serviceLooper: Looper? = null
     private var serviceHandler: ServiceHandler? = null
+    private val INTENT_ACTION: String = "Counter"
 
     private inner class ServiceHandler(looper: Looper) : Handler(looper) {
 
@@ -16,6 +17,7 @@ class CounterService: Service(){
                 msg.arg2 += 1
 
                 val intent = Intent()
+                intent.action = INTENT_ACTION
 
                 intent.putExtra("Counter", msg.arg2)
                 sendBroadcast(intent)
