@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -34,9 +35,18 @@ class CounterActivity: AppCompatActivity() {
         intentFilter.addAction(CounterService.INTENT_ACTION)
         registerReceiver(mBroadcastReceiver, intentFilter)
 
-        if (!serviceRunning) {
-            val intent: Intent = Intent(this, CounterService::class.java)
-            startService(intent)
+        val serviceIntent: Intent = Intent(this, CounterService::class.java)
+
+        val startServiceButton: Button = findViewById(R.id.startServiceButton)
+        val stopServiceButton: Button = findViewById(R.id.stopServiceButton)
+
+        startServiceButton.setOnClickListener{
+            if (!serviceRunning) {
+                startService(serviceIntent)
+            }
+        }
+        stopServiceButton.setOnClickListener{
+            stopService(serviceIntent)
         }
     }
 
