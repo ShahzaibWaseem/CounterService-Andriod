@@ -9,10 +9,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
-
 class CounterActivity: AppCompatActivity() {
-    private lateinit var counterReceiver: CounterReceiver
     private lateinit var countTextView: TextView
+
+    private val mBroadcastReceiver = object : BroadcastReceiver()
+    {
+        override fun onReceive(context: Context?, intent: Intent?) {
+           val counter = intent!!.getIntExtra("Counter", 0)
+            Toast.makeText(context, "Counter: $counter", Toast.LENGTH_SHORT).show()
+            onShowData(counter)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,29 +28,24 @@ class CounterActivity: AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        countTextView = findViewById(R.id.countText)
 
-        counterReceiver = CounterReceiver()
         val intentFilter = IntentFilter()
         intentFilter.addAction(CounterService.INTENT_ACTION)
-        registerReceiver(counterReceiver, intentFilter)
+        registerReceiver(mBroadcastReceiver, intentFilter)
 
         val intent: Intent = Intent(this, CounterService::class.java)
         startService(intent)
+    }
 
-        countTextView.text = counterReceiver.counter.toString()
+    fun onShowData(count: Int) {
+        countTextView = findViewById(R.id.countText)
+
+        countTextView.text = count.toString()
     }
 
     override fun onStop() {
         super.onStop()
-        unregisterReceiver(counterReceiver)
+        unregisterReceiver(mBroadcastReceiver)
     }
 
-    class CounterReceiver: BroadcastReceiver() {
-        var counter: Int = 0
-        override fun onReceive(context: Context?, intent: Intent?) {
-            counter = intent!!.getIntExtra("Counter", 0)
-//            Toast.makeText(context, "Counter: $counter", Toast.LENGTH_SHORT).show()
-        }
-    }
 }
