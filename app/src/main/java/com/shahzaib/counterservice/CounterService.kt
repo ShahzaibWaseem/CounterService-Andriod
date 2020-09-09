@@ -8,6 +8,7 @@ import android.widget.Toast
 class CounterService: Service(){
     private var serviceLooper: Looper? = null
     private var serviceHandler: ServiceHandler? = null
+    private var count: Int = 0
 
     private inner class ServiceHandler(looper: Looper) : Handler(looper) {
 
@@ -40,13 +41,12 @@ class CounterService: Service(){
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show()
 
-        for (i in 0..10) {
-            serviceHandler!!.obtainMessage().also { msg ->
-                msg.arg1 = startId
-                msg.arg2 = i
-                serviceHandler!!.sendMessage(msg)
-            }
+        serviceHandler!!.obtainMessage().also { msg ->
+            msg.arg1 = startId
+            msg.arg2 = count
+            serviceHandler!!.sendMessage(msg)
         }
+        count++
 
         // restart, if service gets killed
         return START_STICKY
@@ -59,7 +59,6 @@ class CounterService: Service(){
 
     override fun onDestroy() {
         Toast.makeText(this, "Service Destroyed", Toast.LENGTH_SHORT).show()
-        stopSelf()
     }
 
     companion object {
