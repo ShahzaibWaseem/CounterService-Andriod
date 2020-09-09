@@ -14,6 +14,12 @@ class CounterService: Service(){
         override fun handleMessage(msg: Message) {
             try {
                 msg.arg2 += 1
+
+                val intent = Intent()
+
+                intent.putExtra("Counter", msg.arg2)
+                sendBroadcast(intent)
+
                 Thread.sleep(5000)
             } catch (e: InterruptedException) {
                 Thread.currentThread().interrupt()
