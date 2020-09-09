@@ -8,7 +8,6 @@ import android.widget.Toast
 class CounterService: Service(){
     private var serviceLooper: Looper? = null
     private var serviceHandler: ServiceHandler? = null
-    private val INTENT_ACTION: String = "Counter"
 
     private inner class ServiceHandler(looper: Looper) : Handler(looper) {
 
@@ -59,5 +58,9 @@ class CounterService: Service(){
 
     override fun onDestroy() {
         Toast.makeText(this, "Service Destroyed", Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        val INTENT_ACTION: String = "Counter"
     }
 }
